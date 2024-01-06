@@ -10,16 +10,16 @@ router.get(
     failureRedirect: process.env.FUNCTIONS_EMULATOR
       ? "http://localhost:5000/"
       : "https://epicansmc.xyz/",
-  }),
-  async (req, res) => {
-    await admin.auth().createCustomToken(req.user.token);
-  }
+  })
 );
 
 router.get(
   "/callback",
   passport.authenticate("discord", { failureRedirect: "/error" }),
-  (req, res) => {
+  async (req, res) => {
+    const customToken = await admin.auth().createCustomToken(req.user.token);
+    console.log(customToken);
+    res.cookie("customToken", customToken);
     res.redirect("/dashboard");
   }
 );

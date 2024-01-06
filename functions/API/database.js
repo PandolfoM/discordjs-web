@@ -14,16 +14,15 @@ module.exports.findUser = async (uid) => {
       obj = { success: true, user: user.data() };
     }
   } catch (error) {
-    console.log(`SEARCH USER ERROR: ${error.message}`);
+    // console.log(`SEARCH USER ERROR: ${error.message}`);
     obj = { success: false, error: error.message };
-    console.log("RETURNING OBJECT:");
-    console.log(obj);
+    // console.log("RETURNING OBJECT:");
+    // console.log(obj);
   }
   return obj;
 };
 
 module.exports.newUser = async (profile) => {
-  console.log(profile);
   let obj;
   try {
     const userRecord = await admin.auth().createUser(profile);

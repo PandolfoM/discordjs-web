@@ -8,6 +8,7 @@ import Navigation from "./components/Navigation.tsx";
 import Home from "./pages/Home.tsx";
 import NoPage from "./pages/NoPage.tsx";
 import Dashboard from "./pages/Dashboard.tsx";
+import { AuthContextProvider } from "./auth/context.tsx";
 // import NoPage from "./pages/NoPage.tsx";
 
 // const router = createBrowserRouter([
@@ -27,16 +28,18 @@ import Dashboard from "./pages/Dashboard.tsx";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <Theme appearance="dark" accentColor="cyan" panelBackground="solid">
-      <BrowserRouter basename="/">
-        <Navigation />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="*" element={<NoPage />} />
-          {/* <RouterProvider router={router} /> */}
-        </Routes>
-      </BrowserRouter>
-    </Theme>
+    <AuthContextProvider>
+      <Theme appearance="dark" accentColor="cyan" panelBackground="solid">
+        <BrowserRouter basename="/">
+          <Navigation />
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="*" element={<NoPage />} />
+            {/* <RouterProvider router={router} /> */}
+          </Routes>
+        </BrowserRouter>
+      </Theme>
+    </AuthContextProvider>
   </React.StrictMode>
 );

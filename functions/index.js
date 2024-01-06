@@ -26,10 +26,8 @@ app.use("/auth", authRoutes);
 app.use(passport.initialize());
 app.use(passport.session());
 
-admin.initializeApp();
-// admin.initializeApp({
-//   credential: admin.credential.cert(serviceAccount),
-//   databaseURL: "https://epicans-bot.firebaseio.com",
-// });
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+});
 
 exports.auth = functions.https.onRequest(app);
