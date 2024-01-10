@@ -10,10 +10,11 @@ export default defineConfig({
     outDir: "dist",
   },
   server: {
+    port: 5000,
     proxy: isTestEnvironment
       ? {
           "/auth": {
-            target: "http://localhost:5001/epicans-bot/us-central1",
+            target: "http://127.0.0.1:5001/epicans-bot/us-central1",
             changeOrigin: true,
           },
         }
@@ -24,5 +25,4 @@ export default defineConfig({
           },
         },
   },
-  base: "/",
 });

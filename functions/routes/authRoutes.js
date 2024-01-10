@@ -17,15 +17,21 @@ router.get(
   "/callback",
   passport.authenticate("discord", { failureRedirect: "/error" }),
   async (req, res) => {
-    const customToken = await admin.auth().createCustomToken(req.user.token);
-    console.log(customToken);
-    res.cookie("customToken", customToken);
-    res.redirect("/dashboard");
+    const claims = {
+      uid: req.user?.uid,
+    };
+
+    admin
+      .auth()
+      .createCustomToken(claims.uid, claims)
+      .then((token) => {
+        res.cookie("customToken", token);
+        res.redirect("/dashboard");
+      });
   }
 );
 
 router.get("/logout", (req, res) => {
-  req.logout();
   res.redirect("/");
 });
 

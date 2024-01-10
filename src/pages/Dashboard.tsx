@@ -7,7 +7,7 @@ function Dashboard() {
   return (
     <div>
       <h1>Admin Servers:</h1>
-      {currentUser && <p>Current User</p>}
+      {currentUser && <p>Current User {currentUser.uid}</p>}
     </div>
   );
 }

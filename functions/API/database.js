@@ -29,7 +29,7 @@ module.exports.newUser = async (profile) => {
     await admin.firestore().doc(`/users/${profile.uid}`).set(profile);
     obj = { success: true, user: userRecord };
   } catch (error) {
-    console.error(`Error creating a user: ${error}`);
+    // console.error(`Error creating a user: ${error}`);
     obj = { success: false, error: error.message };
   }
   return obj;

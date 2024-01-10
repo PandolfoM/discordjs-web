@@ -1,8 +1,8 @@
 interface ImportMetaEnv {
-  readonly APIKEY: string;
-  readonly AUTHDOMAIN: string;
-  readonly PROJECTID: string;
-  readonly STORAGEBUCKET: string;
-  readonly MESSAGINGSENDERID: string;
-  readonly APPID: string;
+  readonly VITE_APIKEY: string;
+  readonly VITE_AUTHDOMAIN: string;
+  readonly VITE_PROJECTID: string;
+  readonly VITE_STORAGEBUCKET: string;
+  readonly VITE_MESSAGINGSENDERID: string;
+  readonly VITE_APPID: string;
 }
