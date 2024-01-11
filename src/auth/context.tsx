@@ -1,4 +1,4 @@
-import { User, signInWithCustomToken } from "firebase/auth";
+import { signInWithCustomToken } from "firebase/auth";
 import React, {
   Dispatch,
   SetStateAction,
@@ -32,22 +32,23 @@ interface IUserDoc {
 }
 
 interface AuthContext {
-  currentUser?: User | null;
-  setCurrentUser: Dispatch<SetStateAction<User | null>>;
-  userDoc?: IUserDoc | null;
-  setUserDoc: Dispatch<SetStateAction<IUserDoc | null>>;
+  currentUser?: IUserDoc | null;
+  setCurrentUser: Dispatch<SetStateAction<IUserDoc | undefined>>;
+  // userDoc?: IUserDoc | null;
+  // setUserDoc: Dispatch<SetStateAction<IUserDoc | null>>;
 }
 
 export const AuthContext = createContext<AuthContext>({
   currentUser: null,
   setCurrentUser: () => {},
-  userDoc: null,
-  setUserDoc: () => {},
+  // userDoc: null,
+  // setUserDoc: () => {},
 });
 
 export const AuthContextProvider = (props: React.PropsWithChildren) => {
-  const [currentUser, setCurrentUser] = useState<User | null>(null);
-  const [userDoc, setUserDoc] = useState<IUserDoc | null>(null);
+  const [currentUser, setCurrentUser] = useState<IUserDoc | undefined>(
+    undefined
+  );
 
   // useEffect(() => {
   //   const unsub = onAuthStateChanged(auth, (user) => {
@@ -70,14 +71,14 @@ export const AuthContextProvider = (props: React.PropsWithChildren) => {
         if (customToken) {
           signInWithCustomToken(auth, customToken).then(
             async (userCredential) => {
-              setCurrentUser(userCredential.user);
+              // setCurrentUser(userCredential.user);
 
               try {
                 const ref = doc(db, "users", userCredential.user.uid);
                 const docSnap = await getDoc(ref);
 
                 if (docSnap.exists()) {
-                  setUserDoc(docSnap.data() as IUserDoc);
+                  setCurrentUser(docSnap.data() as IUserDoc);
                 } else {
                   console.log("No Document");
                 }
@@ -87,6 +88,28 @@ export const AuthContextProvider = (props: React.PropsWithChildren) => {
             }
           );
         } else {
+          if (process.env.NODE_ENV === "development") {
+            setCurrentUser({
+              avatar: "a_f3c01d3e1dcee4458e09c1bd76e5d397",
+              discriminator: "0",
+              email: "matt@pandolfo.com",
+              guilds: [
+                {
+                  features: [],
+                  icon: "a_bad3c64a2c2286b2efe93240b0964542",
+                  id: "726268945266638909",
+                  name: "Epicans 🌭",
+                  owner: true,
+                  permissions: 2147483647,
+                  permissions_new: "562949953421311",
+                },
+              ],
+              refreshToken: "",
+              token: "",
+              uid: "248910149442338816",
+              username: "thoomin",
+            });
+          }
           console.error("Custom token not found in the cookie.");
         }
       } catch (error) {
@@ -98,8 +121,7 @@ export const AuthContextProvider = (props: React.PropsWithChildren) => {
   }, []);
 
   return (
-    <AuthContext.Provider
-      value={{ currentUser, setCurrentUser, userDoc, setUserDoc }}>
+    <AuthContext.Provider value={{ currentUser, setCurrentUser }}>
       {props.children}
     </AuthContext.Provider>
   );

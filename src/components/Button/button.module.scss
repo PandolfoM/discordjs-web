@@ -1,0 +1,35 @@
+@import "../../_variables";
+
+button {
+  cursor: pointer;
+  color: inherit;
+  outline: none;
+  border: none;
+  // padding: 6px 24px;
+  border-radius: 50rem;
+}
+
+.ghost {
+  background-color: transparent;
+
+  &:hover {
+    background-color: #0e6aa868;
+  }
+}
+
+.invisible {
+  background-color: transparent;
+
+  &:hover {
+    background-color: transparent;
+  }
+}
+
+.outline {
+  background-color: transparent;
+  border: 2px solid $white;
+
+  &:hover {
+    background-color: transparent;
+  }
+}

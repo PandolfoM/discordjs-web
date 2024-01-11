@@ -1,7 +1,5 @@
-import { Heading } from "@radix-ui/themes";
-
 function NoPage() {
-  return <Heading>404</Heading>;
+  return <h1>404</h1>;
 }
 
 export default NoPage;

@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import { AuthContext } from "../auth/context";
 
-function Dashboard() {
+function Servers() {
   const { currentUser } = useContext(AuthContext);
 
   return (
@@ -12,4 +12,4 @@ function Dashboard() {
   );
 }
 
-export default Dashboard;
+export default Servers;
