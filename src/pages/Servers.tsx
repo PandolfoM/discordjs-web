@@ -3,6 +3,7 @@ import { AuthContext } from "../auth/context";
 import styles from "./servers.module.scss";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "../firebase";
+import { Link } from "react-router-dom";
 
 function Servers() {
   const { currentUser } = useContext(AuthContext);
@@ -33,13 +34,21 @@ function Servers() {
       <div className={styles.container}>
         {currentUser?.guilds.map((i) => (
           <div key={i.id} className={styles.iconContainer}>
-            <img
-              className={`${styles.serverIcon} ${
-                validServers.includes(i.id) ? styles.valid : styles.invalid
-              }`}
-              src={`https://cdn.discordapp.com/icons/${i.id}/${i.icon}.png`}
-              alt={i.name}
-            />
+            {validServers.includes(i.id) ? (
+              <Link to={`/dashboard/${i.id}`}>
+                <img
+                  className={`${styles.serverIcon} ${styles.valid}`}
+                  src={`https://cdn.discordapp.com/icons/${i.id}/${i.icon}.png`}
+                  alt={i.name}
+                />
+              </Link>
+            ) : (
+              <img
+                className={`${styles.serverIcon} ${styles.invalid}`}
+                src={`https://cdn.discordapp.com/icons/${i.id}/${i.icon}.png`}
+                alt={i.name}
+              />
+            )}
             {i.name}
           </div>
         ))}

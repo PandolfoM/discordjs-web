@@ -5,6 +5,7 @@ import Navigation from "./components/Navigation";
 import Home from "./pages/Home";
 import Servers from "./pages/Servers";
 import NoPage from "./pages/NoPage";
+import Dashboard from "./pages/Dashboard";
 
 type Props = {
   user: IUserDoc | undefined;
@@ -35,6 +36,7 @@ function App() {
             </ProtectedRoute>
           }
         />
+        <Route path="/dashboard/:id" element={<Dashboard />} />
         <Route path="*" element={<NoPage />} />
       </Routes>
     </BrowserRouter>
