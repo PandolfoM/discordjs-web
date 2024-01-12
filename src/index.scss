@@ -20,6 +20,7 @@ html {
   -webkit-text-size-adjust: 100%; /* 2 */
   background-color: $background;
   color: $white;
+  box-sizing: border-box;
 }
 
 /* Sections

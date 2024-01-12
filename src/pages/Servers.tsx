@@ -1,13 +1,49 @@
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../auth/context";
+import styles from "./servers.module.scss";
+import { doc, getDoc } from "firebase/firestore";
+import { db } from "../firebase";
 
 function Servers() {
   const { currentUser } = useContext(AuthContext);
+  const [validServers, setValidServers] = useState<Array<string>>([""]);
+
+  useEffect(() => {
+    const validServer = async () => {
+      const docRef = doc(db, "currentServers", "servers");
+      const docSnap = await getDoc(docRef);
+
+      if (docSnap.exists()) {
+        setValidServers(docSnap.data().id);
+      }
+    };
+
+    validServer();
+
+    return;
+  }, []);
 
   return (
     <div>
-      <h1>Admin Servers:</h1>
-      {currentUser && <p>Current User {currentUser.uid}</p>}
+      <h3>
+        Hello {currentUser?.username}! <br />
+        Please select a server to get started.
+      </h3>
+      <hr />
+      <div className={styles.container}>
+        {currentUser?.guilds.map((i) => (
+          <div key={i.id} className={styles.iconContainer}>
+            <img
+              className={`${styles.serverIcon} ${
+                validServers.includes(i.id) ? styles.valid : styles.invalid
+              }`}
+              src={`https://cdn.discordapp.com/icons/${i.id}/${i.icon}.png`}
+              alt={i.name}
+            />
+            {i.name}
+          </div>
+        ))}
+      </div>
     </div>
   );
 }

@@ -20,7 +20,7 @@ interface IGuilds {
   features: Array<string>;
 }
 
-interface IUserDoc {
+export interface IUserDoc {
   avatar: string;
   discriminator: string;
   email: string;
@@ -32,14 +32,14 @@ interface IUserDoc {
 }
 
 interface AuthContext {
-  currentUser?: IUserDoc | null;
+  currentUser?: IUserDoc | undefined;
   setCurrentUser: Dispatch<SetStateAction<IUserDoc | undefined>>;
   // userDoc?: IUserDoc | null;
   // setUserDoc: Dispatch<SetStateAction<IUserDoc | null>>;
 }
 
 export const AuthContext = createContext<AuthContext>({
-  currentUser: null,
+  currentUser: undefined,
   setCurrentUser: () => {},
   // userDoc: null,
   // setUserDoc: () => {},
@@ -103,12 +103,22 @@ export const AuthContextProvider = (props: React.PropsWithChildren) => {
                   permissions: 2147483647,
                   permissions_new: "562949953421311",
                 },
+                {
+                  features: [],
+                  icon: "ed4054e153a1349353f824b9d1ae5aac",
+                  id: "442509808969580554",
+                  name: "RyRyanP Twitch Server",
+                  owner: false,
+                  permissions: 2147483647,
+                  permissions_new: "562949953421311",
+                },
               ],
               refreshToken: "",
               token: "",
               uid: "248910149442338816",
               username: "thoomin",
             });
+            return;
           }
           console.error("Custom token not found in the cookie.");
         }
