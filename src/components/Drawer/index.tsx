@@ -8,12 +8,14 @@ type LinkProps = {
 };
 
 const DrawerLink = ({ title }: LinkProps) => {
+  const { setDrawerOpen } = useContext(AppContext);
   const { id } = useParams();
 
   return (
     <Link
       to={`/dashboard/${id}/` + title.replace(/\s/g, "").toLowerCase()}
-      className={styles.link}>
+      className={styles.link}
+      onClick={() => setDrawerOpen(false)}>
       {title}
     </Link>
   );
