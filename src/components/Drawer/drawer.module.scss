@@ -1,9 +1,8 @@
 @import "../../variables";
 
 .drawer {
-  position: absolute;
   background-color: $drawerBackground;
-  width: 50%;
+  width: 200px;
   height: 100%;
 }
 
@@ -31,4 +30,14 @@
 
 .pointer {
   pointer-events: none;
+}
+
+@keyframes slideOut {
+  from {
+    width: 0px;
+  }
+
+  to {
+    width: 200px;
+  }
 }

@@ -2,6 +2,7 @@ import { useContext, useEffect, useRef } from "react";
 import { AppContext } from "../../context/appContext";
 import styles from "./drawer.module.scss";
 import { Link, useParams } from "react-router-dom";
+import { AnimatePresence, motion } from "framer-motion";
 
 type LinkProps = {
   title: string;
@@ -50,16 +51,28 @@ function Drawer() {
   }, [drawerOpen, setDrawerOpen]);
 
   return (
-    <>
+    <AnimatePresence>
       {drawerOpen && (
-        <div className={styles.drawer} ref={drawerRef}>
+        <motion.div
+          ref={drawerRef}
+          className={styles.drawer}
+          initial={{
+            left: "-200px",
+          }}
+          animate={{
+            position: "fixed",
+            left: "0",
+          }}
+          exit={{
+            left: "-200px",
+          }}>
           <div className={styles.content}>
             <DrawerTitle title="SETTINGS" />
             <DrawerLink title="Server Settings" />
           </div>
-        </div>
+        </motion.div>
       )}
-    </>
+    </AnimatePresence>
   );
 }
 
