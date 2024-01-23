@@ -5,10 +5,14 @@
   justify-content: space-between;
   align-items: center;
   border-bottom: #0a0a0b;
-  background-color: #1d1d20;
+  background-color: $navBackground;
   box-shadow: 0 0px 10px #0a0a0b;
   height: 4rem;
   padding: 0 1rem;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1;
 
   .navBtns {
     display: flex;
@@ -57,6 +61,7 @@
   animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
   will-change: transform, opacity;
   min-width: 110px;
+  z-index: 100;
 
   .item {
     color: $white;

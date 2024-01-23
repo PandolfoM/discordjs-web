@@ -35,7 +35,7 @@ function Servers() {
         {currentUser?.guilds.map((i) => (
           <div key={i.id} className={styles.iconContainer}>
             {validServers.includes(i.id) ? (
-              <Link to={`/dashboard/${i.id}`}>
+              <Link to={`/dashboard/${i.id}/serversettings`}>
                 <img
                   className={`${styles.serverIcon} ${styles.valid}`}
                   src={`https://cdn.discordapp.com/icons/${i.id}/${i.icon}.png`}

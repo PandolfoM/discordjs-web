@@ -1,4 +1,5 @@
 import {
+  faBars,
   faCaretDown,
   faList,
   faRightFromBracket,
@@ -6,7 +7,7 @@ import {
 import { faHouse } from "@fortawesome/free-solid-svg-icons/faHouse";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useContext } from "react";
-import { Link } from "react-router-dom";
+import { Link, Outlet, useLocation } from "react-router-dom";
 import { AuthContext } from "../../auth/context";
 import Cookies from "js-cookie";
 import { auth } from "../../firebase";
@@ -14,9 +15,15 @@ import styles from "./navigation.module.scss";
 import Button from "../Button";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import * as Avatar from "@radix-ui/react-avatar";
+import { AppContext } from "../../context/appContext";
 
 function Navigation() {
   const { currentUser } = useContext(AuthContext);
+  const { drawerOpen, setDrawerOpen } = useContext(AppContext);
+  const location = useLocation();
+
+  const dashboardIdRegex = /^\/dashboard\/\d+\/\w+$/;
+  const isDashboardRoute = dashboardIdRegex.test(location.pathname);
 
   const logOut = async () => {
     try {
@@ -29,59 +36,71 @@ function Navigation() {
   };
 
   return (
-    <nav className={styles.nav}>
-      <div className={styles.navBtns}>
-        <Button variant="invisible">
-          <Link to="/">
-            <FontAwesomeIcon icon={faHouse} size="lg" />
-          </Link>
-        </Button>
-      </div>
-      <div>
-        {currentUser ? (
-          <DropdownMenu.Root>
-            <DropdownMenu.Trigger asChild>
-              <div className={styles.user}>
-                <Avatar.Root className={styles.avatar}>
-                  <Avatar.Image
-                    className={styles.avatar_image}
-                    src={`https://cdn.discordapp.com/avatars/${currentUser.uid}/${currentUser.avatar}.png`}
-                    alt={currentUser.username}
-                  />
-                  <Avatar.AvatarFallback>
-                    {currentUser.username.charAt(0)}
-                  </Avatar.AvatarFallback>
-                </Avatar.Root>
-                <Button variant="invisible">
-                  <FontAwesomeIcon icon={faCaretDown} size="xs" />
-                </Button>
-              </div>
-            </DropdownMenu.Trigger>
-            <DropdownMenu.Portal>
-              <DropdownMenu.Content className={styles.content} align="end">
-                <DropdownMenu.Item className={styles.item} asChild>
-                  <Link to={"/servers"}>
-                    <FontAwesomeIcon icon={faList} size="xs" />
-                    Servers
-                  </Link>
-                </DropdownMenu.Item>
-                <DropdownMenu.Item onClick={logOut} className={styles.item}>
-                  <FontAwesomeIcon icon={faRightFromBracket} size="xs" />
-                  Log out
-                </DropdownMenu.Item>
-                <DropdownMenu.Arrow className={styles.arrow} />
-              </DropdownMenu.Content>
-            </DropdownMenu.Portal>
-          </DropdownMenu.Root>
-        ) : (
-          <Button variant="ghost">
-            <a href="/auth/login" style={{ textDecoration: "none" }}>
-              Login
-            </a>
+    <>
+      <nav className={styles.nav}>
+        {isDashboardRoute && (
+          <Button
+            variant="invisible"
+            onClick={() => setDrawerOpen(!drawerOpen)}>
+            <FontAwesomeIcon icon={faBars} size="lg" />
           </Button>
         )}
+        <div className={styles.navBtns}>
+          <Button variant="invisible">
+            <Link to="/">
+              <FontAwesomeIcon icon={faHouse} size="lg" />
+            </Link>
+          </Button>
+        </div>
+        <div>
+          {currentUser ? (
+            <DropdownMenu.Root>
+              <DropdownMenu.Trigger asChild>
+                <div className={styles.user}>
+                  <Avatar.Root className={styles.avatar}>
+                    <Avatar.Image
+                      className={styles.avatar_image}
+                      src={`https://cdn.discordapp.com/avatars/${currentUser.uid}/${currentUser.avatar}.png`}
+                      alt={currentUser.username}
+                    />
+                    <Avatar.AvatarFallback>
+                      {currentUser.username.charAt(0)}
+                    </Avatar.AvatarFallback>
+                  </Avatar.Root>
+                  <Button variant="invisible">
+                    <FontAwesomeIcon icon={faCaretDown} size="xs" />
+                  </Button>
+                </div>
+              </DropdownMenu.Trigger>
+              <DropdownMenu.Portal>
+                <DropdownMenu.Content className={styles.content} align="end">
+                  <DropdownMenu.Item className={styles.item} asChild>
+                    <Link to={"/servers"}>
+                      <FontAwesomeIcon icon={faList} size="xs" />
+                      Servers
+                    </Link>
+                  </DropdownMenu.Item>
+                  <DropdownMenu.Item onClick={logOut} className={styles.item}>
+                    <FontAwesomeIcon icon={faRightFromBracket} size="xs" />
+                    Log out
+                  </DropdownMenu.Item>
+                  <DropdownMenu.Arrow className={styles.arrow} />
+                </DropdownMenu.Content>
+              </DropdownMenu.Portal>
+            </DropdownMenu.Root>
+          ) : (
+            <Button variant="ghost">
+              <a href="/auth/login" style={{ textDecoration: "none" }}>
+                Login
+              </a>
+            </Button>
+          )}
+        </div>
+      </nav>
+      <div style={{ paddingTop: "4rem" }}>
+        <Outlet />
       </div>
-    </nav>
+    </>
   );
 }
 

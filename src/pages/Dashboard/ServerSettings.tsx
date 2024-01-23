@@ -1,10 +1,11 @@
 import { useContext, useEffect, useState } from "react";
 import { Navigate, useParams } from "react-router-dom";
-import { AuthContext } from "../auth/context";
+import { AuthContext } from "../../auth/context";
 import { doc, getDoc } from "firebase/firestore";
-import { db } from "../firebase";
+import { db } from "../../firebase";
+import Sidenav from "../../components/Drawer";
 
-function Dashboard() {
+function ServerSettings() {
   const { currentUser } = useContext(AuthContext);
   const { id } = useParams<string>();
   const [isValidId, setIsValidId] = useState<boolean | null>(null);
@@ -34,7 +35,12 @@ function Dashboard() {
     return <Navigate to="/" replace />;
   }
 
-  return <div>Dashboard</div>;
+  return (
+    <>
+      <Sidenav />
+      <div>ServerSettings</div>
+    </>
+  );
 }
 
-export default Dashboard;
+export default ServerSettings;

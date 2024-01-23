@@ -1,9 +1,11 @@
-import React, { ReactNode } from "react";
+import React, { CSSProperties, ReactNode } from "react";
 import styles from "./button.module.scss";
 
 type Props = {
   children: React.PropsWithChildren<ReactNode>;
   variant: "solid" | "ghost" | "invisible" | "outline";
+  onClick?: () => void;
+  style?: CSSProperties;
 };
 
 function Button(props: Props) {
@@ -16,7 +18,11 @@ function Button(props: Props) {
       ? styles.outline
       : styles.solid;
 
-  return <button className={buttonClass}>{props.children}</button>;
+  return (
+    <button className={buttonClass} onClick={props.onClick} style={props.style}>
+      {props.children}
+    </button>
+  );
 }
 
 export default Button;
