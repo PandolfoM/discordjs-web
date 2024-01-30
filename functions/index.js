@@ -6,6 +6,7 @@ const passport = require("passport");
 const session = require("express-session");
 const functions = require("firebase-functions");
 const authRoutes = require("./routes/authRoutes");
+const { defineSecret } = require("firebase-functions/params");
 require("./services/discordOauth");
 
 const app = express();
@@ -30,4 +31,30 @@ admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
 });
 
-exports.auth = functions.https.onRequest(app);
+exports.auth = functions.https.onRequest(
+  { secrets: ["CLIENT_ID", "CLIENT_SECRET"] },
+  app
+);
+
+exports.getChannels = functions.https.onCall((data, context) => {
+  const botToken = defineSecret("BOT_TOKEN");
+  return fetch(`https://discord.com/api/guilds/${data.guildId}/channels`, {
+    method: "GET",
+    headers: {
+      Authorization: `Bot ${botToken.value()}`,
+      "Content-Type": "application/json",
+    },
+  })
+    .then((res) => {
+      if (!res.ok) {
+        console.error(`HTTP error! Status: ${res.status}`);
+      }
+
+      return res.json();
+    })
+    .then((data) => {
+      return {
+        channels: data,
+      };
+    });
+});

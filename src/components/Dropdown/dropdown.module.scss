@@ -1,0 +1,104 @@
+@import "../../variables";
+
+.trigger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  border-radius: 4px;
+  padding: 0 15px;
+  font-size: 1rem;
+  line-height: 1;
+  height: 35px;
+  gap: 5px;
+  background-color: $background_2;
+  color: $white;
+  width: 100%;
+
+  &[data-placeholder] {
+    content: "";
+    color: rgba($white, 0.5);
+  }
+
+  &[data-state="open"] {
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+}
+
+.content {
+  // overflow: hidden;
+  background-color: $background_2;
+  border-radius: 6px;
+}
+
+.scrollBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 25px;
+  background-color: $background_2;
+  color: $primary;
+  cursor: default;
+}
+
+.selectItem {
+  font-size: 1rem;
+  line-height: 1;
+  color: $white;
+  border-radius: 3px;
+  display: flex;
+  align-items: center;
+  height: 25px;
+  padding: 0.5rem;
+  position: relative;
+  user-select: none;
+
+  &[data-disabled] {
+    color: $white;
+    pointer-events: none;
+  }
+
+  &[data-highlighted] {
+    outline: none;
+    background-color: $primary;
+  }
+
+  &[data-state="checked"] {
+    background-color: $background_3;
+  }
+}
+
+.itemIndicator {
+  position: absolute;
+  left: 0;
+  width: 25px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.viewport {
+  overflow-y: auto;
+}
+
+.label {
+  padding: 0.5rem;
+  background-color: $background_1;
+}
+
+.group {
+  overflow-x: hidden;
+}
+
+.portal {
+  div {
+    left: 0 !important;
+    top: auto !important;
+    bottom: auto !important;
+    height: auto !important;
+    margin: 0 !important;
+    width: 100% !important;
+    border-radius: 0;
+    display: block !important;
+  }
+}

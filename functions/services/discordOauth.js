@@ -36,8 +36,8 @@ passport.deserializeUser(async (uid, done) => {
 passport.use(
   new DiscordStrategy(
     {
-      clientID: "1191803053423214722",
-      clientSecret: "NBPdtLfOkFtUiZTnfT2XASrBmoergoam",
+      clientID: `${process.env.CLIENT_ID}`,
+      clientSecret: `${process.env.CLIENT_SECRET}`,
       callbackURL: process.env.FUNCTIONS_EMULATOR
         ? "http://localhost:5000/auth/callback"
         : "https://epicansmc.xyz/auth/callback",
