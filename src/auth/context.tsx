@@ -34,33 +34,17 @@ export interface IUserDoc {
 interface AuthContext {
   currentUser?: IUserDoc | undefined;
   setCurrentUser: Dispatch<SetStateAction<IUserDoc | undefined>>;
-  // userDoc?: IUserDoc | null;
-  // setUserDoc: Dispatch<SetStateAction<IUserDoc | null>>;
 }
 
 export const AuthContext = createContext<AuthContext>({
   currentUser: undefined,
   setCurrentUser: () => {},
-  // userDoc: null,
-  // setUserDoc: () => {},
 });
 
 export const AuthContextProvider = (props: React.PropsWithChildren) => {
   const [currentUser, setCurrentUser] = useState<IUserDoc | undefined>(
     undefined
   );
-
-  // useEffect(() => {
-  //   const unsub = onAuthStateChanged(auth, (user) => {
-  //     if (user) {
-  //       console.log("Auth state");
-
-  //       // setCurrentUser(user);
-  //     }
-  //   });
-
-  //   return () => unsub();
-  // }, []);
 
   useEffect(() => {
     const handleSignIn = async () => {

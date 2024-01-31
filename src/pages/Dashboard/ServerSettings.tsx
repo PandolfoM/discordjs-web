@@ -6,24 +6,36 @@ import { db, functions } from "../../firebase";
 import Sidenav from "../../components/Drawer";
 import { httpsCallable } from "firebase/functions";
 import Dropdown from "../../components/Dropdown";
+import { ChannelProps, SettingsProps } from "../../utils/types";
+import { AppContext } from "../../context/appContext";
 
 function ServerSettings() {
   const { currentUser } = useContext(AuthContext);
+  const { settings, setSettings } = useContext(AppContext);
   const { id } = useParams<string>();
   const [isValidId, setIsValidId] = useState<boolean | null>(null);
-  const [channels, setChannels] = useState<Array<object>>([]);
+  const [channels, setChannels] = useState<Array<ChannelProps>>([]);
 
   useEffect(() => {
     const checkValidity = async (): Promise<void> => {
-      const docRef = doc(db, "currentServers", "servers");
-      const docSnap = await getDoc(docRef);
+      const serversRef = doc(db, "currentServers", "servers");
+      const serversSnap = await getDoc(serversRef);
 
-      if (docSnap.exists()) {
+      if (serversSnap.exists()) {
         const valid =
           currentUser?.guilds.some(
-            (guild) => guild.id === id && guild.id.includes(docSnap.data().id)
+            (guild) =>
+              guild.id === id && guild.id.includes(serversSnap.data().id)
           ) ?? null;
         setIsValidId(valid);
+
+        if (id) {
+          const settingsRef = doc(db, "settings", id);
+          const settingsSnap = await getDoc(settingsRef);
+
+          if (settingsSnap.exists())
+            setSettings(settingsSnap.data() as SettingsProps);
+        }
       }
     };
 
@@ -44,6 +56,10 @@ function ServerSettings() {
     }
   }, [isValidId, id]);
 
+  useEffect(() => {
+    console.log(settings);
+  }, [settings]);
+
   if (isValidId === null) {
     return <div>Loading...</div>;
   }
@@ -57,7 +73,7 @@ function ServerSettings() {
       <Sidenav />
       <h4 style={{ textAlign: "center" }}>Channel Selection</h4>
       <div>
-        <Dropdown channels={channels} />
+        <Dropdown channels={channels} dbItem={"djRole"} />
       </div>
     </>
   );
