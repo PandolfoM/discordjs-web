@@ -11,7 +11,7 @@ function ServerSettings() {
   const { currentUser } = useContext(AuthContext);
   const { id } = useParams<string>();
   const [isValidId, setIsValidId] = useState<boolean | null>(null);
-  const [channels, setChannels] = useState<Array<object>>();
+  const [channels, setChannels] = useState<Array<object>>([]);
 
   useEffect(() => {
     const checkValidity = async (): Promise<void> => {
@@ -35,8 +35,6 @@ function ServerSettings() {
       const getChannels = httpsCallable(functions, "getChannels");
       await getChannels({ guildId }).then((result) => {
         const data = result.data as { channels?: [] };
-        console.log(data.channels);
-
         return setChannels(data.channels);
       });
     };
