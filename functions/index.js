@@ -31,10 +31,7 @@ admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
 });
 
-exports.auth = functions.https.onRequest(
-  { secrets: ["CLIENT_ID", "CLIENT_SECRET"] },
-  app
-);
+exports.auth = functions.https.onRequest(app);
 
 exports.getChannels = functions.https.onCall((data, context) => {
   const botToken = defineSecret("BOT_TOKEN");

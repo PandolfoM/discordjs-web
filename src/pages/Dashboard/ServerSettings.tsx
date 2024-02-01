@@ -11,7 +11,7 @@ import { AppContext } from "../../context/appContext";
 
 function ServerSettings() {
   const { currentUser } = useContext(AuthContext);
-  const { setSettings, channels, setChannels, roles, setRoles } =
+  const { setSettings, channels, setChannels, setRoles } =
     useContext(AppContext);
   const { id } = useParams<string>();
   const [isValidId, setIsValidId] = useState<boolean | null>(null);

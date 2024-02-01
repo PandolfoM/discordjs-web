@@ -5,17 +5,12 @@ button {
   color: inherit;
   outline: none;
   border: none;
-  // padding: 6px 24px;
+  padding: 0;
   border-radius: 50rem;
 }
 
 .ghost {
   background-color: transparent;
-  padding: 0.5rem 1rem;
-
-  &:hover {
-    background-color: #0e6aa868;
-  }
 }
 
 .invisible {
@@ -29,6 +24,7 @@ button {
 .outline {
   background-color: transparent;
   border: 2px solid $white;
+  display: flex;
 
   &:hover {
     background-color: transparent;
