@@ -6,15 +6,15 @@ import { db, functions } from "../../firebase";
 import Sidenav from "../../components/Drawer";
 import { httpsCallable } from "firebase/functions";
 import Dropdown from "../../components/Dropdown";
-import { ChannelProps, SettingsProps } from "../../utils/types";
+import { ChannelProps, RoleProps, SettingsProps } from "../../utils/types";
 import { AppContext } from "../../context/appContext";
 
 function ServerSettings() {
   const { currentUser } = useContext(AuthContext);
-  const { settings, setSettings } = useContext(AppContext);
+  const { setSettings, channels, setChannels, roles, setRoles } =
+    useContext(AppContext);
   const { id } = useParams<string>();
   const [isValidId, setIsValidId] = useState<boolean | null>(null);
-  const [channels, setChannels] = useState<Array<ChannelProps>>([]);
 
   useEffect(() => {
     const checkValidity = async (): Promise<void> => {
@@ -33,8 +33,9 @@ function ServerSettings() {
           const settingsRef = doc(db, "settings", id);
           const settingsSnap = await getDoc(settingsRef);
 
-          if (settingsSnap.exists())
+          if (settingsSnap.exists()) {
             setSettings(settingsSnap.data() as SettingsProps);
+          }
         }
       }
     };
@@ -43,22 +44,25 @@ function ServerSettings() {
   }, [currentUser, id]);
 
   useEffect(() => {
-    const guildChannels = async (guildId: string | undefined) => {
+    const getData = async (guildId: string | undefined) => {
       const getChannels = httpsCallable(functions, "getChannels");
+      const getRoles = httpsCallable(functions, "getRoles");
       await getChannels({ guildId }).then((result) => {
-        const data = result.data as { channels?: [] };
-        return setChannels(data.channels);
+        const data = result.data;
+
+        return setChannels(data as [ChannelProps]);
+      });
+      await getRoles({ guildId }).then((result) => {
+        const data = result.data;
+
+        return setRoles(data as [RoleProps]);
       });
     };
 
     if (isValidId) {
-      guildChannels(id);
+      getData(id);
     }
   }, [isValidId, id]);
-
-  useEffect(() => {
-    console.log(settings);
-  }, [settings]);
 
   if (isValidId === null) {
     return <div>Loading...</div>;

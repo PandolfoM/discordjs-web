@@ -53,8 +53,51 @@ exports.getChannels = functions.https.onCall((data, context) => {
       return res.json();
     })
     .then((data) => {
-      return {
-        channels: data,
-      };
+      return data;
+    });
+});
+
+exports.getMembers = functions.https.onCall((data, context) => {
+  const botToken = defineSecret("BOT_TOKEN");
+  return fetch(
+    `https://discord.com/api/guilds/${data.guildId}/members?limit=1000&after=0`,
+    {
+      method: "GET",
+      headers: {
+        Authorization: `Bot ${botToken.value()}`,
+        "Content-Type": "application/json",
+      },
+    }
+  )
+    .then((res) => {
+      if (!res.ok) {
+        console.error(`HTTP error! Status: ${res.status}`);
+      }
+
+      return res.json();
+    })
+    .then((data) => {
+      return data;
+    });
+});
+
+exports.getRoles = functions.https.onCall((data, context) => {
+  const botToken = defineSecret("BOT_TOKEN");
+  return fetch(`https://discord.com/api/guilds/${data.guildId}/roles`, {
+    method: "GET",
+    headers: {
+      Authorization: `Bot ${botToken.value()}`,
+      "Content-Type": "application/json",
+    },
+  })
+    .then((res) => {
+      if (!res.ok) {
+        console.error(`HTTP error! Status: ${res.status}`);
+      }
+
+      return res.json();
+    })
+    .then((data) => {
+      return data;
     });
 });
