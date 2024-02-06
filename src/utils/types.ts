@@ -38,23 +38,35 @@ export type SettingsProps = {
 };
 
 export type RoleProps = {
-  name: string;
-  permissions: string;
   color: number;
+  description?: string | null;
+  flags: number;
   hoist: boolean;
   icon?: ImageData | null;
-  unicode_emoji?: string | null;
+  id: string;
+  managed: boolean;
   mentionable: boolean;
+  name: string;
+  permissions: number;
+  permissions_new: string;
+  position: number;
+  unicode_emoji?: string | null;
 };
 
 export const defaultRole: RoleProps = {
-  name: "new role",
-  permissions: "@everyone permissions in guild",
   color: 0,
+  description: null,
+  flags: 0,
   hoist: false,
   icon: null,
-  unicode_emoji: null,
+  id: "0",
+  managed: false,
   mentionable: false,
+  name: "@everyone",
+  permissions: 0,
+  permissions_new: "0",
+  position: 0,
+  unicode_emoji: null,
 };
 
 export const defaultChannels: ChannelProps = {

@@ -4,7 +4,7 @@ import {
   faHashtag,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import styles from "./dropdown.module.scss";
+import styles from "./channelsdropdown.module.scss";
 import { MouseEvent, useContext, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { ChannelProps, SettingsProps } from "../../utils/types";
@@ -15,7 +15,7 @@ type Props = {
   dbItem: keyof SettingsProps;
 };
 
-function Dropdown({ channels, dbItem }: Props) {
+function ChannelsDropdown({ channels, dbItem }: Props) {
   const { setSettings } = useContext(AppContext);
   const [dropdownOpen, setDropdownOpen] = useState<boolean>(false);
   const [selectedItem, setSelectedItem] = useState<string>("");
@@ -48,7 +48,7 @@ function Dropdown({ channels, dbItem }: Props) {
   return (
     <>
       <button
-        className={styles.trigger}
+        className={`${styles.trigger} ${dropdownOpen ? styles.open : ""}`}
         onClick={() => setDropdownOpen(!dropdownOpen)}>
         <span>
           <FontAwesomeIcon icon={faHashtag} style={{ opacity: 0.3 }} />
@@ -120,4 +120,4 @@ function Dropdown({ channels, dbItem }: Props) {
   );
 }
 
-export default Dropdown;
+export default ChannelsDropdown;

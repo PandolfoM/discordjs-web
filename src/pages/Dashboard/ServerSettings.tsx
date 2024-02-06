@@ -5,13 +5,14 @@ import { doc, getDoc } from "firebase/firestore";
 import { db, functions } from "../../firebase";
 import Sidenav from "../../components/Drawer";
 import { httpsCallable } from "firebase/functions";
-import Dropdown from "../../components/Dropdown";
+import ChannelsDropdown from "../../components/ChannelsDropdown";
 import { ChannelProps, RoleProps, SettingsProps } from "../../utils/types";
 import { AppContext } from "../../context/appContext";
+import RolesDropdown from "../../components/RolesDropdown";
 
 function ServerSettings() {
   const { currentUser } = useContext(AuthContext);
-  const { setSettings, channels, setChannels, setRoles } =
+  const { setSettings, channels, setChannels, roles, setRoles } =
     useContext(AppContext);
   const { id } = useParams<string>();
   const [isValidId, setIsValidId] = useState<boolean | null>(null);
@@ -54,6 +55,7 @@ function ServerSettings() {
       });
       await getRoles({ guildId }).then((result) => {
         const data = result.data;
+        console.log(data);
 
         return setRoles(data as [RoleProps]);
       });
@@ -77,7 +79,8 @@ function ServerSettings() {
       <Sidenav />
       <h4 style={{ textAlign: "center" }}>Channel Selection</h4>
       <div>
-        <Dropdown channels={channels} dbItem={"djRole"} />
+        <ChannelsDropdown channels={channels} dbItem={"musicChannel"} />
+        <RolesDropdown roles={roles} dbItem={"djRole"} />
       </div>
     </>
   );
